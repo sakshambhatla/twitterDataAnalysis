@@ -12,19 +12,21 @@ ACCESS_SECRET = str(accessFile.readline()).rstrip()
 
 lastID=0
 
-while True:
-	auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-	auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-	api = tweepy.API(auth)
-	results = api.search(q="obama", rpp=100, since_id = lastID)
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+api = tweepy.API(auth)
+print api.rate_limit_status()
 
+
+while True:
+	results = api.search(q="testbot sbhatla", since_id = lastID)
 	try:
 		lastID = results[0].id
 	except:
 		pass
-	print lastID
+	#print lastID
 	for result in results:
-		print result.id
+		print result.id, result.author.name, result.favorite_count, result.retweet_count
 		#print result.favorite_count
 		#print result.author.name
 		#print result.author.screen_name
