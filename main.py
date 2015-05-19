@@ -10,11 +10,27 @@ CONSUMER_SECRET = str(accessFile.readline()).rstrip()
 ACCESS_KEY = str(accessFile.readline()).rstrip()
 ACCESS_SECRET = str(accessFile.readline()).rstrip()
 
+lastID=0
 
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-api = tweepy.API(auth)
-results = api.search(q="obama", lang='EN')
+while True:
+	auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+	auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+	api = tweepy.API(auth)
+	results = api.search(q="obama", rpp=100, since_id = lastID)
 
-for result in results:
-    print result.text.encode('utf-8')
+	try:
+		lastID = results[0].id
+	except:
+		pass
+	print lastID
+	for result in results:
+		print result.id
+		#print result.favorite_count
+		#print result.author.name
+		#print result.author.screen_name
+		#print result.author.followers_count
+		#print result.retweet_count
+		print result.text.encode('utf-8')
+
+	time.sleep(3)
+	
